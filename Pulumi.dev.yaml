@@ -1,6 +1,10 @@
 config:
   aws:region: eu-west-2
   lambda-streams:github-token:
-    secure: AAABAOgGQtRPat67NNmmKPkTh535TQGdUQVBiptbptnzYLYoJyiA/dQiq8u/1EikjZFR3GmHCZChOvewBiyI0RSV1+zyA7ym
+    secure: AAABAHvrQ9yY6JRgD6vE1iyHW0ByAsdutTZ5RVGJCSl49JRN1UJ4ah/H3p20IlSkU9SF4eRsOEt2aE1XrJ80rsliKWHYhJbQ
   lambda-streams:pulumi-access-token:
-    secure: AAABAD9NfHjzB7L7Prx6rPvIbh6rCMud9Aq4kxmO0c+ufatWCPAxaO91vhgI0boJCGoYy99y8/7Adihzoq/ClkKps9dhrBg+VZW8eg==
+    secure: AAABAAO6GC/CXFb1c8RqtARdA0uUzc2yfFUaX5CxC4UAtMVtVYdk0IRabz/umOS0YpRqQw9aKZh7ygG56V2bFLQxJU1XmP9XP/zuyQ==
+  polumi-spikes:pulumi-access-token:
+    secure: AAABAOK8JmuZfIzqYz+O9/NpqV3xIl+ZPcXS1XQRtIuENV73Q5Bdiz4qCVZqqzuBLTO97hXL9OmIa925xCsD+VZuh3i6EEzveEleuA==
+  pulumi-spikes:github-token:
+    secure: AAABAMz5GxQvv54BYsQj5x8gyLxTqBIafA0eSxiA1Deh+Zh1x0Eymn8a3uir3Qed4UzFSU5ybe8zPpazlYMeIxDygcJNc2me
