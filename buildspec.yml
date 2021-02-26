@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - curl -fsSL https://get.pulumi.com | sh
+      - PATH=$PATH:/root/.pulumi/bin
+  pre_build:
+    commands:
+      - yarn install
+      - pulumi login --non-interactive
+  build:
+    commands:
+      - pulumi stack select dev
+      - pulumi up --non-interactive --yes

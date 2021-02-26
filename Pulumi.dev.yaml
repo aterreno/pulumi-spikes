@@ -1,0 +1,6 @@
+config:
+  aws:region: eu-west-2
+  lambda-streams:github-token:
+    secure: AAABAOgGQtRPat67NNmmKPkTh535TQGdUQVBiptbptnzYLYoJyiA/dQiq8u/1EikjZFR3GmHCZChOvewBiyI0RSV1+zyA7ym
+  lambda-streams:pulumi-access-token:
+    secure: AAABAD9NfHjzB7L7Prx6rPvIbh6rCMud9Aq4kxmO0c+ufatWCPAxaO91vhgI0boJCGoYy99y8/7Adihzoq/ClkKps9dhrBg+VZW8eg==
