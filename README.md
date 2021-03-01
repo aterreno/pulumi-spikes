@@ -1,6 +1,6 @@
 # Spikes
 
-Various Spikes to experiment potential solutions using Polumi, AWS, Lambdas
+Various Spikes to experiment potential solutions using Pulumi, AWS, Lambdas
 
 ## TODO
 
