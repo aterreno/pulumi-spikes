@@ -1,5 +1,5 @@
 import * as aws from "@pulumi/aws";
-import * as handler from "../functions";
+import { handle }  from "../functions/profilesOnChangeHandler";
 import * as pulumi from "@pulumi/pulumi";
 
 const env = pulumi.getStack();
@@ -18,6 +18,6 @@ export const profilesTable = new aws.dynamodb.Table("profiles", {
   
   profilesTable.onEvent(
       "notify-on-profile-changes",
-      evt => handler.handle(evt),
+      evt => handle(evt),
       { batchSize: 100, startingPosition: "LATEST" }
   );
