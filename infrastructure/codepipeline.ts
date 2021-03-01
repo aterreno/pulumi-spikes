@@ -2,7 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import { buildProject as project } from "./codebuild";
 
-const example = new aws.codestarconnections.Connection("example", {providerType: "GitHub"});
+const githHubConnection = new aws.codestarconnections.Connection("example", {providerType: "GitHub"});
 
 const codepipelineBucket = new aws.s3.Bucket("codepipelineBucket", {acl: "private"});
 
@@ -20,19 +20,17 @@ const codepipelineRole = new aws.iam.Role("codepipelineRole", {assumeRolePolicy:
 }
 `});
 
-// const s3kmskey = aws.kms.getAlias({
-//     name: "alias/myKmsKey",
-// });
+const s3kmskey = new aws.kms.Key("codepipeline-key", {});
 
 export const codepipeline = new aws.codepipeline.Pipeline("codepipeline", {
     roleArn: codepipelineRole.arn,
     artifactStore: {
         location: codepipelineBucket.bucket,
         type: "S3",
-        // encryptionKey: {
-        //     id: s3kmskey.then(s3kmskey => s3kmskey.arn),
-        //     type: "KMS",
-        // },
+        encryptionKey: {
+            id: s3kmskey.id,
+            type: "KMS",
+        },
     },
     stages: [
         {
@@ -45,7 +43,7 @@ export const codepipeline = new aws.codepipeline.Pipeline("codepipeline", {
                 version: "1",
                 outputArtifacts: ["source_output"],
                 configuration: {
-                    ConnectionArn: example.arn,
+                    ConnectionArn: githHubConnection.arn,
                     FullRepositoryId: "aterreno/pulumi-spikes",
                     BranchName: "main",
                 },
@@ -116,7 +114,7 @@ new aws.iam.RolePolicy("codepipelinePolicy", {
     {
         "Effect": "Allow",
         "Action": "codestar-connections:UseConnection",
-        "Resource": "${example.arn}"
+        "Resource": "${githHubConnection.arn}"
     }
   ]
 }
