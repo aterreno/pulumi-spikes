@@ -4,9 +4,9 @@ import { buildProject as project } from "./codebuild";
 
 const githHubConnection = new aws.codestarconnections.Connection("example", {providerType: "GitHub"});
 
-const codepipelineBucket = new aws.s3.Bucket("codepipelineBucket", {acl: "private"});
+const codepipelineBucket = new aws.s3.Bucket("codepipeline-bucket", {acl: "private"});
 
-const codepipelineRole = new aws.iam.Role("codepipelineRole", {assumeRolePolicy: `{
+const codepipelineRole = new aws.iam.Role("codepipeline-role", {assumeRolePolicy: `{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -22,14 +22,14 @@ const codepipelineRole = new aws.iam.Role("codepipelineRole", {assumeRolePolicy:
 
 const s3kmskey = new aws.kms.Key("codepipeline-key", {});
 
-export const codepipeline = new aws.codepipeline.Pipeline("codepipeline", {
+export const codepipeline = new aws.codepipeline.Pipeline("pulumi-spikes-pipeline", {
     roleArn: codepipelineRole.arn,
     artifactStore: {
         location: codepipelineBucket.bucket,
         type: "S3",
         encryptionKey: {
-            id: s3kmskey.id,
-            type: "KMS",
+          id: s3kmskey.id,
+          type: "KMS",
         },
     },
     stages: [
@@ -82,41 +82,41 @@ export const codepipeline = new aws.codepipeline.Pipeline("codepipeline", {
         //         },
         //     }],
         // },
-    ],
+    ],    
 });
 
-new aws.iam.RolePolicy("codepipelinePolicy", {
-    role: codepipelineRole.id,
-    policy: pulumi.interpolate`{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect":"Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:GetObjectVersion",
-        "s3:GetBucketVersioning",
-        "s3:PutObject"
-      ],
-      "Resource": [
-        "${codepipelineBucket.arn}",
-        "${codepipelineBucket.arn}/*"
-      ]
-    },
-    {
+const policy = new aws.iam.RolePolicy("codepipeline-policy", {
+  role: codepipelineRole.id,
+  policy: pulumi.interpolate`{
+"Version": "2012-10-17",
+"Statement": [
+  {
+    "Effect":"Allow",
+    "Action": [        
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetBucketVersioning",
+      "s3:PutObject"
+    ],
+    "Resource": [
+      "${codepipelineBucket.arn}",
+      "${codepipelineBucket.arn}/*"
+    ]
+  },
+  {
+    "Effect": "Allow",
+    "Action": [
+      "codebuild:BatchGetBuilds",
+      "codebuild:StartBuild"
+    ],
+    "Resource": "*"
+  },
+  {
       "Effect": "Allow",
-      "Action": [
-        "codebuild:BatchGetBuilds",
-        "codebuild:StartBuild"
-      ],
-      "Resource": "*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": "codestar-connections:UseConnection",
-        "Resource": "${githHubConnection.arn}"
-    }
-  ]
+      "Action": "codestar-connections:UseConnection",
+      "Resource": "${githHubConnection.arn}"
+  }
+]
 }
 `,
 });

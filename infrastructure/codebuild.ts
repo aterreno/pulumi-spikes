@@ -24,7 +24,7 @@ new aws.codebuild.SourceCredential('github-token', {
     },
   });
   
-  new aws.iam.RolePolicyAttachment('spikes-policy', {
+  new aws.iam.RolePolicyAttachment('codebuild-role-policy', {
     role: buildRole,
     policyArn: 'arn:aws:iam::aws:policy/AdministratorAccess',
   });
@@ -35,11 +35,11 @@ new aws.codebuild.SourceCredential('github-token', {
   });
   
   
-  export const buildProject = new aws.codebuild.Project('spikes', {
+  export const buildProject = new aws.codebuild.Project('pulumi-spikes-build', {
     serviceRole: buildRole.arn,
     source: {
-      type: 'GITHUB',
-      location: 'https://github.com/aterreno/pulumi-spikes.git',
+      type: 'CODEPIPELINE',
+      buildspec: "../buildspec.yaml"
     },
     environment: {
       type: 'LINUX_CONTAINER',
@@ -52,8 +52,8 @@ new aws.codebuild.SourceCredential('github-token', {
           value: pulumiAccessToken.name,
         },
       ],
-    },
-    artifacts: { type: 'NO_ARTIFACTS' },
+    },    
+    artifacts: { type: "CODEPIPELINE" },
   });
   
   new aws.codebuild.Webhook('spikes-webhook', {

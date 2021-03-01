@@ -16,4 +16,4 @@ export const contentBucketWebsiteEndpoint = frontend.contentBucketWebsiteEndpoin
 export const cloudFrontDomain = frontend.cloudFrontDomain;
 export const targetDomainEndpoint = frontend.targetDomainEndpoint;
 
-export const pipeline = codepipeline.codepipeline;
+export const pipeline = codepipeline.codepipeline.name;

@@ -15,3 +15,9 @@ phases:
     commands:
       - pulumi stack select dev
       - pulumi up --non-interactive --yes
+artifacts: 
+  files:
+    - '**/*'
+  base-directory: .
+  name: pulumi-spikes
+  discard-paths: no
