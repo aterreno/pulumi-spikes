@@ -1,3 +1,10 @@
 name: lambda-streams
 runtime: nodejs
 description: A minimal AWS TypeScript Pulumi program
+template:
+  config:
+    aws:region:      
+      description: The AWS region to deploy into
+      default: eu-west-2    
+    lambda-streams:certificateArn:
+      description: 
